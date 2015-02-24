@@ -8,33 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		29BE4EC71A97A59F0025C38E /* IGInterfaceDataTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 29BE4EC61A97A59F0025C38E /* IGInterfaceDataTable.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		29BE4ECD1A97A59F0025C38E /* IGInterfaceDataTable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29BE4EC11A97A59F0025C38E /* IGInterfaceDataTable.framework */; };
-		29BE4ED41A97A59F0025C38E /* IGInterfaceDataTableTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BE4ED31A97A59F0025C38E /* IGInterfaceDataTableTests.m */; };
-		29BE4EDE1A97A5A70025C38E /* WatchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29BE4EDD1A97A5A70025C38E /* WatchKit.framework */; };
 		29BE4EE61A984D0A0025C38E /* WKInterfaceTable+IGInterfaceDataTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 29BE4EE41A984D0A0025C38E /* WKInterfaceTable+IGInterfaceDataTable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		29BE4EE71A984D0A0025C38E /* WKInterfaceTable+IGInterfaceDataTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BE4EE51A984D0A0025C38E /* WKInterfaceTable+IGInterfaceDataTable.m */; };
-		29BE4EE81A984D0A0025C38E /* WKInterfaceTable+IGInterfaceDataTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BE4EE51A984D0A0025C38E /* WKInterfaceTable+IGInterfaceDataTable.m */; };
-		29BE4EE91A984DE60025C38E /* WatchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29BE4EDD1A97A5A70025C38E /* WatchKit.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		29BE4ECE1A97A59F0025C38E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29BE4EB81A97A59F0025C38E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 29BE4EC01A97A59F0025C38E;
-			remoteInfo = IGInterfaceDataTable;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		29BE4EC11A97A59F0025C38E /* IGInterfaceDataTable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = IGInterfaceDataTable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		29BE4EC51A97A59F0025C38E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		29BE4EC61A97A59F0025C38E /* IGInterfaceDataTable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IGInterfaceDataTable.h; sourceTree = "<group>"; };
-		29BE4ECC1A97A59F0025C38E /* IGInterfaceDataTableTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IGInterfaceDataTableTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		29BE4ED21A97A59F0025C38E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		29BE4ED31A97A59F0025C38E /* IGInterfaceDataTableTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IGInterfaceDataTableTests.m; sourceTree = "<group>"; };
-		29BE4EDD1A97A5A70025C38E /* WatchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WatchKit.framework; path = System/Library/Frameworks/WatchKit.framework; sourceTree = SDKROOT; };
 		29BE4EE41A984D0A0025C38E /* WKInterfaceTable+IGInterfaceDataTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WKInterfaceTable+IGInterfaceDataTable.h"; sourceTree = "<group>"; };
 		29BE4EE51A984D0A0025C38E /* WKInterfaceTable+IGInterfaceDataTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WKInterfaceTable+IGInterfaceDataTable.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -44,16 +25,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29BE4EDE1A97A5A70025C38E /* WatchKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		29BE4EC91A97A59F0025C38E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				29BE4EE91A984DE60025C38E /* WatchKit.framework in Frameworks */,
-				29BE4ECD1A97A59F0025C38E /* IGInterfaceDataTable.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,7 +35,6 @@
 			isa = PBXGroup;
 			children = (
 				29BE4EC31A97A59F0025C38E /* IGInterfaceDataTable */,
-				29BE4ED01A97A59F0025C38E /* IGInterfaceDataTableTests */,
 				29BE4EC21A97A59F0025C38E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -73,7 +43,6 @@
 			isa = PBXGroup;
 			children = (
 				29BE4EC11A97A59F0025C38E /* IGInterfaceDataTable.framework */,
-				29BE4ECC1A97A59F0025C38E /* IGInterfaceDataTableTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -81,11 +50,10 @@
 		29BE4EC31A97A59F0025C38E /* IGInterfaceDataTable */ = {
 			isa = PBXGroup;
 			children = (
+				29BE4EC61A97A59F0025C38E /* IGInterfaceDataTable.h */,
+				29BE4EC41A97A59F0025C38E /* Supporting Files */,
 				29BE4EE41A984D0A0025C38E /* WKInterfaceTable+IGInterfaceDataTable.h */,
 				29BE4EE51A984D0A0025C38E /* WKInterfaceTable+IGInterfaceDataTable.m */,
-				29BE4EC61A97A59F0025C38E /* IGInterfaceDataTable.h */,
-				29BE4EDD1A97A5A70025C38E /* WatchKit.framework */,
-				29BE4EC41A97A59F0025C38E /* Supporting Files */,
 			);
 			path = IGInterfaceDataTable;
 			sourceTree = "<group>";
@@ -94,23 +62,6 @@
 			isa = PBXGroup;
 			children = (
 				29BE4EC51A97A59F0025C38E /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		29BE4ED01A97A59F0025C38E /* IGInterfaceDataTableTests */ = {
-			isa = PBXGroup;
-			children = (
-				29BE4ED31A97A59F0025C38E /* IGInterfaceDataTableTests.m */,
-				29BE4ED11A97A59F0025C38E /* Supporting Files */,
-			);
-			path = IGInterfaceDataTableTests;
-			sourceTree = "<group>";
-		};
-		29BE4ED11A97A59F0025C38E /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				29BE4ED21A97A59F0025C38E /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -148,24 +99,6 @@
 			productReference = 29BE4EC11A97A59F0025C38E /* IGInterfaceDataTable.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		29BE4ECB1A97A59F0025C38E /* IGInterfaceDataTableTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 29BE4EDA1A97A59F0025C38E /* Build configuration list for PBXNativeTarget "IGInterfaceDataTableTests" */;
-			buildPhases = (
-				29BE4EC81A97A59F0025C38E /* Sources */,
-				29BE4EC91A97A59F0025C38E /* Frameworks */,
-				29BE4ECA1A97A59F0025C38E /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				29BE4ECF1A97A59F0025C38E /* PBXTargetDependency */,
-			);
-			name = IGInterfaceDataTableTests;
-			productName = IGInterfaceDataTableTests;
-			productReference = 29BE4ECC1A97A59F0025C38E /* IGInterfaceDataTableTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -176,9 +109,6 @@
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					29BE4EC01A97A59F0025C38E = {
-						CreatedOnToolsVersion = 6.2;
-					};
-					29BE4ECB1A97A59F0025C38E = {
 						CreatedOnToolsVersion = 6.2;
 					};
 				};
@@ -196,20 +126,12 @@
 			projectRoot = "";
 			targets = (
 				29BE4EC01A97A59F0025C38E /* IGInterfaceDataTable */,
-				29BE4ECB1A97A59F0025C38E /* IGInterfaceDataTableTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		29BE4EBF1A97A59F0025C38E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		29BE4ECA1A97A59F0025C38E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -227,24 +149,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		29BE4EC81A97A59F0025C38E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				29BE4ED41A97A59F0025C38E /* IGInterfaceDataTableTests.m in Sources */,
-				29BE4EE81A984D0A0025C38E /* WKInterfaceTable+IGInterfaceDataTable.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		29BE4ECF1A97A59F0025C38E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 29BE4EC01A97A59F0025C38E /* IGInterfaceDataTable */;
-			targetProxy = 29BE4ECE1A97A59F0025C38E /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		29BE4ED51A97A59F0025C38E /* Debug */ = {
@@ -361,36 +266,6 @@
 			};
 			name = Release;
 		};
-		29BE4EDB1A97A59F0025C38E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = IGInterfaceDataTableTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		29BE4EDC1A97A59F0025C38E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = IGInterfaceDataTableTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -408,14 +283,6 @@
 			buildConfigurations = (
 				29BE4ED81A97A59F0025C38E /* Debug */,
 				29BE4ED91A97A59F0025C38E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		29BE4EDA1A97A59F0025C38E /* Build configuration list for PBXNativeTarget "IGInterfaceDataTableTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				29BE4EDB1A97A59F0025C38E /* Debug */,
-				29BE4EDC1A97A59F0025C38E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

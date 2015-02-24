@@ -42,16 +42,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "29BE4ECB1A97A59F0025C38E"
-               BuildableName = "IGInterfaceDataTableTests.xctest"
-               BlueprintName = "IGInterfaceDataTableTests"
-               ReferencedContainer = "container:IGInterfaceDataTable.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

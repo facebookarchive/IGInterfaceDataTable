@@ -4,7 +4,7 @@ Pod::Spec.new do |spec|
   spec.license      =  { :type => 'BSD' }
   spec.authors      = { 'Ryan Nystrom' => 'rnystrom@fb.com' }
   spec.summary      = 'TODO'
-  spec.source       = { :git => 'https://github.com/facebook/IGInterfaceDataTable.git', :tag => '0.1.0' }
+  spec.source       = { :git => 'https://github.com/instagram/IGInterfaceDataTable.git', :tag => '0.1.0' }
 
   spec.public_header_files = [
       'IGInterfaceDataTable/*.h'
