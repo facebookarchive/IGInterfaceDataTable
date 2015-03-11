@@ -3,6 +3,7 @@
 [![Version](http://img.shields.io/cocoapods/v/IGInterfaceDataTable.svg)](http://cocoapods.org/?q=IGInterfaceDataTable)
 [![Platform](http://img.shields.io/cocoapods/p/IGInterfaceDataTable.svg)]()
 [![License](http://img.shields.io/cocoapods/l/IGInterfaceDataTable.svg)](https://github.com/Instagram/IGInterfaceDataTable/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/Instagram/IGInterfaceDataTable.svg)](https://travis-ci.org/Instagram/IGInterfaceDataTable)
 
 IGInterfaceDataTable is an abstraction to make adding data and rows to [WKInterfaceTable](https://developer.apple.com/library/prerelease/ios/documentation/WatchKit/Reference/WKInterfaceTable_class/index.html) more manageable. Instead of flattening your data structures into a single-dimensional array, configure your watch tables using the data source pattern, similar to `UITableViewDataSource`.
 
@@ -26,7 +27,7 @@ Import the framework header, or create an [Objective-C bridging header](https://
 
 ## Getting Started
 
-In order to start using IGInterfaceDataTable, you simply need to conform an object to `IGInterfaceTableDataSource` and set it as your table's `ig_dataSource`.
+In order to start using IGInterfaceDataTable, you simply need to conform an object to `IGInterfaceTableDataSource` (defined in [WKInterfaceTable+IGInterfaceDataTable.h](https://github.com/Instagram/IGInterfaceDataTable/blob/master/IGInterfaceDataTable/WKInterfaceTable%2BIGInterfaceDataTable.h)) and set it as your table's `ig_dataSource`.
 
 There are only two required methods that you need to implement to start displaying data. The first returns the number of rows for a section. If you don't implement `numberOfSectionsInTable:`, the data source defaults to just a single section.
 
@@ -76,4 +77,5 @@ Or, you can scroll straight to a section without having to lookup the row index 
 ```
 
 ## License
+
 IGInterfaceDataTable is BSD-licensed. We also provide an additional patent grant.
