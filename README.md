@@ -22,7 +22,7 @@ Import the framework header, or create an [Objective-C bridging header](https://
 
 ## Getting Started
 
-In order to start using IGInterfaceDataTable, you simply need to conform an object to `IGInterfaceTableDataSource` and set it as your table's `ig_dataSource`.
+In order to start using IGInterfaceDataTable, you simply need to conform an object to `IGInterfaceTableDataSource` (defined in [WKInterfaceTable+IGInterfaceDataTable.h](https://github.com/Instagram/IGInterfaceDataTable/blob/master/IGInterfaceDataTable/WKInterfaceTable%2BIGInterfaceDataTable.h)) and set it as your table's `ig_dataSource`.
 
 There are only two required methods that you need to implement to start displaying data. The first returns the number of rows for a section. If you don't implement `numberOfSectionsInTable:`, the data source defaults to just a single section.
 
@@ -72,4 +72,5 @@ Or, you can scroll straight to a section without having to lookup the row index 
 ```
 
 ## License
+
 IGInterfaceDataTable is BSD-licensed. We also provide an additional patent grant.
