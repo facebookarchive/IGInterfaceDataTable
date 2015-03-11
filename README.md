@@ -76,6 +76,12 @@ Or, you can scroll straight to a section without having to lookup the row index 
 [table scrollToSection:section];
 ```
 
+## Testing
+
+Since `WKInterfaceTable` objects must be initialized from storyboards, and there is no mechanism yet to create a WatchKit storyboard in code, we cannot use Xcode unit tests yet.
+
+For now, tests are run manually by executing the **ApplicationTests** WatchKit extension and ensuring that none of the asserts are fired.
+
 ## License
 
 IGInterfaceDataTable is BSD-licensed. We also provide an additional patent grant.
