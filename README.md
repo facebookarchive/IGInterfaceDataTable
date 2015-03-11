@@ -13,7 +13,7 @@ Use IGInterfaceDataTable to build beautiful apps with complex data types, just l
 
 You can quickly install IGInterfaceDataTable using [CocoaPods](http://cocoapods.org). Add the following to your Podfile:
 
-```
+```ruby
 pod 'IGInterfaceDataTable'
 ```
 
@@ -21,7 +21,7 @@ If you would rather install the framework manually, simply copy the `WKInterface
 
 Import the framework header, or create an [Objective-C bridging header](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html) if you're using Swift.
 
-```
+```objective-c
 #import <IGInterfaceDataTable/IGInterfaceDataTable.h>
 ```
 
@@ -31,13 +31,13 @@ In order to start using IGInterfaceDataTable, you simply need to conform an obje
 
 There are only two required methods that you need to implement to start displaying data. The first returns the number of rows for a section. If you don't implement `numberOfSectionsInTable:`, the data source defaults to just a single section.
 
-```
+```objective-c
 - (NSInteger)numberOfRowsInTable:(WKInterfaceTable *)table section:(NSInteger)section;
 ```
 
 The other required method returns the **identifier** of the row controller configured in your WatchKit storyboard. You must not return `nil`.
 
-```
+```objective-c
 - (NSString *)table:(WKInterfaceTable *)table rowIdentifierAtIndexPath:(NSIndexPath *)indexPath;
 ```
 
@@ -49,7 +49,7 @@ IGInterfaceDataSource provides convenience methods to update your row controller
 
 The following method will pass the data source a row controller for a row in the table. You are then free to configure the row, such as setting text labels or adding images.
 
-```
+```objective-c
 - (void)table:(WKInterfaceTable *)table configureRowController:(NSObject *)rowController forIndexPath:(NSIndexPath *)indexPath;
 ```
 
@@ -61,7 +61,7 @@ IGInterfaceDataSource also provides convenience methods to make bridging between
 
 For example, in order to map a row selection back to the index path of your data, you call `-[WKInterfaceTable indexPathFromRowIndex:]`
 
-```
+```objective-c
 - (void)table:(WKInterfaceTable *)table didSelectRowAtIndex:(NSInteger)rowIndex {
   NSIndexPath *indexPath = [table indexPathFromRowIndex:rowIndex];
   if (indexPath) {
@@ -72,7 +72,7 @@ For example, in order to map a row selection back to the index path of your data
 
 Or, you can scroll straight to a section without having to lookup the row index of your data:
 
-```
+```objective-c
 [table scrollToSection:section];
 ```
 
