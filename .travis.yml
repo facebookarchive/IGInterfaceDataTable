@@ -1,0 +1,12 @@
+language: objective-c
+before_install:
+  - brew update
+  - brew reinstall xctool
+  - xcrun simctl list
+script: xctool \
+    -project IGInterfaceDataTable.xcodeproj \
+    -scheme 'IGInterfaceDataTable' \
+    -configuration Debug \
+    -sdk iphonesimulator8.2 \
+    -arch i386 \
+    build

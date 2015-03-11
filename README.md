@@ -1,5 +1,7 @@
 # IGInterfaceDataTable
 
+[![Build Status](https://travis-ci.org/Instagram/IGInterfaceDataTable.svg)](https://travis-ci.org/Instagram/IGInterfaceDataTable)
+
 IGInterfaceDataTable is an abstraction to make adding data and rows to [WKInterfaceTable](https://developer.apple.com/library/prerelease/ios/documentation/WatchKit/Reference/WKInterfaceTable_class/index.html) more manageable. Instead of flattening your data structures into a single-dimensional array, configure your watch tables using the data source pattern, similar to `UITableViewDataSource`.
 
 Use IGInterfaceDataTable to build beautiful apps with complex data types, just like the [Instagram Apple Watch](http://www.apple.com/watch/app-store-apps/#instagram) app.
