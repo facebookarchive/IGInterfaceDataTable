@@ -82,6 +82,10 @@ Since `WKInterfaceTable` objects must be initialized from storyboards, and there
 
 For now, tests are run manually by executing the **ApplicationTests** WatchKit extension and ensuring that none of the asserts are fired.
 
+## Contributing
+
+See the CONTRIBUTING file for how to help out.
+
 ## License
 
 IGInterfaceDataTable is BSD-licensed. We also provide an additional patent grant.
