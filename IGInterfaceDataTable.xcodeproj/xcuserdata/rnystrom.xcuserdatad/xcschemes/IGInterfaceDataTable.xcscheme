@@ -28,8 +28,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "29BE4ECB1A97A59F0025C38E"
-               BuildableName = "IGInterfaceDataTableTests.xctest"
+               BlueprintIdentifier = "29035A2E1AAFF6520085AEE5"
+               BuildableName = "IGInterfaceDataTableTests.appex"
                BlueprintName = "IGInterfaceDataTableTests"
                ReferencedContainer = "container:IGInterfaceDataTable.xcodeproj">
             </BuildableReference>

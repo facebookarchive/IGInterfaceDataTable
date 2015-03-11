@@ -27,23 +27,34 @@
 - (void)awakeWithContext:(id)context {
   [super awakeWithContext:context];
 
-  self.data = @[
-                @{
-                  @"title": @"Red",
-                  @"items": @[@"Mollis", @"Tristique", @"Aenean"]
-                  },
-                @{
-                  @"title": @"Purple",
-                  @"items": @[@"Amet Etiam", @"Adipiscing", @"Fusce"]
-                  },
-                @{
-                  @"title": @"Teal",
-                  @"items": @[@"Sollicitudin", @"Inceptos", @"Dapibus Elit"]
-                  }
-                ];
+  self.data = [self.class generatedData];
 
   self.table.ig_dataSource = self;
   [self.table reloadData];
+}
+
++ (NSArray *)generatedData {
+  return @[
+           @{
+             @"title": @"Red",
+             @"items": @[@"Mollis", @"Tristique", @"Aenean"]
+             },
+           @{
+             @"title": @"Purple",
+             @"items": @[@"Amet Etiam", @"Adipiscing", @"Fusce"]
+             },
+           @{
+             @"title": @"Teal",
+             @"items": @[@"Sollicitudin", @"Inceptos", @"Dapibus Elit"]
+             }
+           ];
+}
+
++ (NSDictionary *)singleAdd {
+  return @{
+           @"title": @"Added",
+           @"items": @[@"New Item", @"New Item"]
+           };
 }
 
 
@@ -54,7 +65,8 @@
   NSIndexPath *indexPath = [table indexPathFromRowIndex:rowIndex];
   if (indexPath) {
     NSDictionary *sectionItem = self.data[indexPath.section];
-    NSString *item = sectionItem[@"items"][indexPath.row];
+    NSArray *items = sectionItem[@"items"];
+    NSString *item = items[indexPath.row];
     NSLog(@"tapped %@ in section %zi row %zi",item,indexPath.section,indexPath.row);
   }
 }

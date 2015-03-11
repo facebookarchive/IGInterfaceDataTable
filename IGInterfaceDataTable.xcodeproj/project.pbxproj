@@ -119,6 +119,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 29BE4EB71A97A59F0025C38E;
 			productRefGroup = 29BE4EC21A97A59F0025C38E /* Products */;
@@ -285,6 +286,7 @@
 				29BE4ED91A97A59F0025C38E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

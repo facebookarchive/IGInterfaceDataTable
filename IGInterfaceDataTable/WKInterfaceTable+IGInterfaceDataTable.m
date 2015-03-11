@@ -15,36 +15,51 @@
 
 @interface IGTableRowData : NSObject
 @property (nonatomic, strong, readonly) NSString *identifier;
-@property (nonatomic, assign, readonly) NSIndexPath *indexPath;
+@property (nonatomic, assign) NSUInteger section;
+@property (nonatomic, assign) NSUInteger row;
 @end
 
 @implementation IGTableRowData
 
-- (instancetype)initWithIdentifier:(NSString *)identifier indexPath:(NSIndexPath *)indexPath {
+- (instancetype)initWithIdentifier:(NSString *)identifier {
+  return [self initWithIdentifier:identifier section:NSNotFound row:NSNotFound];
+}
+
+- (instancetype)initWithIdentifier:(NSString *)identifier section:(NSUInteger)section {
+  return [self initWithIdentifier:identifier section:section row:NSNotFound];
+}
+
+- (instancetype)initWithIdentifier:(NSString *)identifier section:(NSUInteger)section row:(NSUInteger)row {
   if (self = [super init]) {
     _identifier = identifier;
-    _indexPath = indexPath;
+    _section = section;
+    _row = row;
   }
   return self;
 }
 
-- (NSString *)description {
-  return [NSString stringWithFormat:@"identifier: %@, section: %zi: row: %zi",self.identifier,self.indexPath.section,self.indexPath.row];
+- (BOOL)isEqual:(id)object {
+  if ([object isKindOfClass:IGTableRowData.class]) {
+    IGTableRowData *data = (IGTableRowData *)object;
+    return [self.identifier isEqualToString:data.identifier] && self.section == data.section && self.row == data.row;
+  } else {
+    return NO;
+  }
 }
 
 @end
 
 @implementation WKInterfaceTable (IGInterfaceDataTable)
 
-// lazy flagging for section headers
-static NSInteger const kRNTableSectionHeaderIndex = NSNotFound;
-
 - (void)reloadData {
-  id<IGInterfaceTableDataSource> dataSource = self.ig_dataSource;
-  if (!dataSource) {
-    NSLog(@"Calling reloadData on a WKInterfaceTable without setting ig_dataSource. Did you mean to do that?");
-    return;
-  }
+  NSArray *rowSectionData = [self rowSectionDataForDataSource:[self ig_dataSource]];
+  [self syncRowSectionData:rowSectionData];
+  [self configureRowSectionData:rowSectionData];
+  [self setRowSectionData:rowSectionData];
+}
+
+- (NSArray *)rowSectionDataForDataSource:(id<IGInterfaceTableDataSource>)dataSource {
+  NSAssert(dataSource != nil, @"Calling reloadData on a WKInterfaceTable without setting ig_dataSource. Did you mean to do that?");
 
   NSMutableArray *rowSectionData = [[NSMutableArray alloc] init];
 
@@ -52,7 +67,7 @@ static NSInteger const kRNTableSectionHeaderIndex = NSNotFound;
   if ([dataSource respondsToSelector:@selector(headerIdentifierForTable:)]) {
     NSString *tableHeaderIdentifier = [dataSource headerIdentifierForTable:self];
     if (tableHeaderIdentifier) {
-      IGTableRowData *rowData = [[IGTableRowData alloc] initWithIdentifier:tableHeaderIdentifier indexPath:nil];
+      IGTableRowData *rowData = [[IGTableRowData alloc] initWithIdentifier:tableHeaderIdentifier];
       [rowSectionData addObject:rowData];
     }
   }
@@ -71,8 +86,8 @@ static NSInteger const kRNTableSectionHeaderIndex = NSNotFound;
     if (hasSectionIdentifiers) {
       NSString *sectionRowIdentifier = [dataSource table:self identifierForSection:section];
       if (sectionRowIdentifier) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:kRNTableSectionHeaderIndex inSection:section];
-        IGTableRowData *rowData = [[IGTableRowData alloc] initWithIdentifier:sectionRowIdentifier indexPath:indexPath];
+        //        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:kRNTableSectionHeaderIndex inSection:section];
+        IGTableRowData *rowData = [[IGTableRowData alloc] initWithIdentifier:sectionRowIdentifier section:section];
         [rowSectionData addObject:rowData];
       }
     }
@@ -82,47 +97,54 @@ static NSInteger const kRNTableSectionHeaderIndex = NSNotFound;
       NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
       NSString *rowIdentifier = [dataSource table:self rowIdentifierAtIndexPath:indexPath];
       NSAssert(rowIdentifier != nil, @"Row identifiers are required and cannot be nil");
-      IGTableRowData *rowData = [[IGTableRowData alloc] initWithIdentifier:rowIdentifier indexPath:indexPath];
+      IGTableRowData *rowData = [[IGTableRowData alloc] initWithIdentifier:rowIdentifier section:section row:row];
       [rowSectionData addObject:rowData];
     }
   }
 
   // capture the footer for configuring when iterating over row controllers
-  IGTableRowData *footerRowData;
   if ([dataSource respondsToSelector:@selector(footerIdentifierForTable:)]) {
     NSString *footerIdentifier = [dataSource footerIdentifierForTable:self];
     if (footerIdentifier) {
-      footerRowData = [[IGTableRowData alloc] initWithIdentifier:footerIdentifier indexPath:nil];
+      IGTableRowData *footerRowData = [[IGTableRowData alloc] initWithIdentifier:footerIdentifier];
       [rowSectionData addObject:footerRowData];
     }
   }
 
+  return rowSectionData;
+}
+
+- (void)syncRowSectionData:(NSArray *)rowSectionData {
   // flattened array of only the NSString identifiers that map to row controllers
   NSArray *identifiers = [rowSectionData valueForKeyPath:@"identifier"];
   [self setRowTypes:identifiers];
+}
+
+- (void)configureRowSectionData:(NSArray *)rowSectionData {
+  id<IGInterfaceTableDataSource> dataSource = self.ig_dataSource;
 
   [rowSectionData enumerateObjectsUsingBlock:^(IGTableRowData *rowData, NSUInteger idx, BOOL *stop) {
     // this is directly related to the controller set in -setRowTypes:
     NSObject *controller = [self rowControllerAtIndex:idx];
-    NSIndexPath *indexPath = rowData.indexPath;
+    NSIndexPath *indexPath = nil;
+    if (rowData.section != NSNotFound) {
+      indexPath = [NSIndexPath indexPathForRow:rowData.row inSection:rowData.section];
+    }
 
     // configure the header, footer, sections, and rows only if the data source does so
     if (!indexPath) {
       if (idx == 0 && [dataSource respondsToSelector:@selector(table:configureHeaderController:)]) {
         [dataSource table:self configureHeaderController:controller];
-      } else if (rowData == footerRowData
-                 && [dataSource respondsToSelector:@selector(table:configureHeaderController:)]) {
+      } else if ([dataSource respondsToSelector:@selector(table:configureHeaderController:)]) {
         [dataSource table:self configureFooterController:controller];
       }
-    } else if (indexPath.row == kRNTableSectionHeaderIndex
+    } else if (indexPath.row == NSNotFound
                && [dataSource respondsToSelector:@selector(table:configureSectionController:forSection:)]) {
       [dataSource table:self configureSectionController:controller forSection:indexPath.section];
     } else if ([dataSource respondsToSelector:@selector(table:configureRowController:forIndexPath:)]) {
       [dataSource table:self configureRowController:controller forIndexPath:indexPath];
     }
   }];
-
-  [self setRowSectionData:rowSectionData];
 }
 
 
@@ -130,24 +152,25 @@ static NSInteger const kRNTableSectionHeaderIndex = NSNotFound;
 
 - (NSIndexPath *)_indexPathFromRowIndex:(NSInteger)rowIndex {
   // remember that this will return index paths with kRNTableSectionHeaderIndex rows for section headers
-  return [[self rowSectionData][rowIndex] indexPath];
+  IGTableRowData *rowData = [self rowSectionData][rowIndex];
+  return [NSIndexPath indexPathForRow:rowData.row inSection:rowData.section];
 }
 
 - (NSIndexPath *)indexPathFromRowIndex:(NSInteger)rowIndex {
   NSIndexPath *indexPath = [self _indexPathFromRowIndex:rowIndex];
   // for the public method, return nil for section rows
-  if (indexPath && indexPath.row == kRNTableSectionHeaderIndex) {
+  if (indexPath && indexPath.row == NSNotFound) {
     return nil;
   }
   return indexPath;
 }
 
 - (NSInteger)rowIndexFromIndexPath:(NSIndexPath *)indexPath {
+  NSAssert(indexPath != nil, @"Cannot search for a nil indexPath");
   __block NSInteger rowIndex = NSNotFound;
   if (indexPath) {
     [[self rowSectionData] enumerateObjectsUsingBlock:^(IGTableRowData *rowData, NSUInteger idx, BOOL *stop) {
-      NSIndexPath *rowIndexPath = rowData.indexPath;
-      if ([rowIndexPath isEqual:indexPath]) {
+      if (indexPath.row == rowData.row && indexPath.section == rowData.section) {
         rowIndex = idx;
         *stop = YES;
       }
@@ -157,12 +180,12 @@ static NSInteger const kRNTableSectionHeaderIndex = NSNotFound;
 }
 
 - (NSInteger)rowIndexFromSection:(NSInteger)section {
-  NSIndexPath *indexPath = [NSIndexPath indexPathForRow:kRNTableSectionHeaderIndex inSection:section];
+  NSIndexPath *indexPath = [NSIndexPath indexPathForRow:NSNotFound inSection:section];
   return [self rowIndexFromIndexPath:indexPath];
 }
 
 - (NSInteger)sectionFromRowIndex:(NSInteger)rowIndex {
-  return [[[self rowSectionData][rowIndex] indexPath] section];
+  return [[self rowSectionData][rowIndex] section];
 }
 
 
@@ -220,16 +243,13 @@ static NSInteger const kRNTableSectionHeaderIndex = NSNotFound;
 
 - (void)insertSections:(NSIndexSet *)sections withSectionType:(NSString *)sectionType {
   NSMutableIndexSet *rowIndexes = [[NSMutableIndexSet alloc] init];
-  NSMutableArray *insertedRowData = [[NSMutableArray alloc] init];
+  NSMutableArray *insertedSections = [[NSMutableArray alloc] init];
 
   [sections enumerateIndexesUsingBlock:^(NSUInteger section, BOOL *stop) {
     NSInteger rowIndex = [self rowIndexFromSection:section];
     if (rowIndex != NSNotFound) {
       [rowIndexes addIndex:rowIndex];
-      NSIndexPath *indexPath = [NSIndexPath indexPathForRow:kRNTableSectionHeaderIndex inSection:section];
-      IGTableRowData *rowData = [[IGTableRowData alloc] initWithIdentifier:sectionType indexPath:indexPath];
-      [[self rowSectionData] insertObject:rowData atIndex:rowIndex];
-      [insertedRowData addObject:rowData];
+      [insertedSections addObject:@(section)];
     }
   }];
 
@@ -238,10 +258,13 @@ static NSInteger const kRNTableSectionHeaderIndex = NSNotFound;
   if ([self.ig_dataSource respondsToSelector:@selector(table:configureSectionController:forSection:)]) {
     [rowIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
       NSObject *controller = [self rowControllerAtIndex:idx];
-      IGTableRowData *rowData = insertedRowData[idx];
-      [self.ig_dataSource table:self configureSectionController:controller forSection:rowData.indexPath.section];
+      NSUInteger section = [insertedSections[idx] integerValue];
+      [self.ig_dataSource table:self configureSectionController:controller forSection:section];
     }];
   }
+
+  NSArray *rowSectionData = [self rowSectionDataForDataSource:[self ig_dataSource]];
+  [self setRowSectionData:rowSectionData];
 }
 
 - (void)insertRowsAtIndexPaths:(NSArray *)indexPaths withRowType:(NSString *)rowType {
@@ -252,8 +275,7 @@ static NSInteger const kRNTableSectionHeaderIndex = NSNotFound;
     NSInteger rowIndex = [self rowIndexFromIndexPath:indexPath];
     if (rowIndex != NSNotFound) {
       [rowIndexes addIndex:rowIndex];
-      IGTableRowData *rowData = [[IGTableRowData alloc] initWithIdentifier:rowType indexPath:indexPath];
-      [[self rowSectionData] insertObject:rowData atIndex:rowIndex];
+      IGTableRowData *rowData = [[IGTableRowData alloc] initWithIdentifier:rowType section:indexPath.section row:indexPath.row];
       [insertedRowData addObject:rowData];
     }
   }];
@@ -264,14 +286,19 @@ static NSInteger const kRNTableSectionHeaderIndex = NSNotFound;
     [rowIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
       NSObject *controller = [self rowControllerAtIndex:idx];
       IGTableRowData *rowData = insertedRowData[idx];
-      [self.ig_dataSource table:self configureRowController:controller forIndexPath:rowData.indexPath];
+      NSIndexPath *indexPath = [NSIndexPath indexPathForRow:rowData.row inSection:rowData.section];
+      [self.ig_dataSource table:self configureRowController:controller forIndexPath:indexPath];
     }];
   }
+
+  NSArray *rowSectionData = [self rowSectionDataForDataSource:[self ig_dataSource]];
+  [self setRowSectionData:rowSectionData];
 }
 
 - (void)removeSections:(NSIndexSet *)sections {
   NSMutableIndexSet *rowIndexes = [[NSMutableIndexSet alloc] init];
-  NSMutableArray *rowSectionData = [self rowSectionData];
+  NSArray *originalRowSectionData = [self rowSectionData];
+  NSUInteger count = originalRowSectionData.count;
 
   [sections enumerateIndexesUsingBlock:^(NSUInteger section, BOOL *stop) {
     NSInteger rowIndex = [self rowIndexFromSection:section];
@@ -279,11 +306,11 @@ static NSInteger const kRNTableSectionHeaderIndex = NSNotFound;
       [rowIndexes addIndex:rowIndex];
 
       // remove all rows in the section that is being removed
-      if (rowIndex < rowSectionData.count - 1) {
+      if (rowIndex < originalRowSectionData.count - 1) {
         NSInteger subArrayStart = rowIndex + 1;
-        NSArray *subRowData = [rowSectionData subarrayWithRange:NSMakeRange(subArrayStart, rowSectionData.count - subArrayStart)];
+        NSArray *subRowData = [originalRowSectionData subarrayWithRange:NSMakeRange(subArrayStart, count - subArrayStart)];
         [subRowData enumerateObjectsUsingBlock:^(IGTableRowData *row, NSUInteger idx, BOOL *stop2) {
-          if (row.indexPath.section == section) {
+          if (row.section == section) {
             [rowIndexes addIndex:idx];
           } else {
             *stop2 = YES;
@@ -294,7 +321,9 @@ static NSInteger const kRNTableSectionHeaderIndex = NSNotFound;
   }];
 
   [self removeRowsAtIndexes:rowIndexes];
-  [rowSectionData removeObjectsAtIndexes:rowIndexes];
+
+  NSArray *updatedSectionData = [self rowSectionDataForDataSource:[self ig_dataSource]];
+  [self setRowSectionData:updatedSectionData];
 }
 
 - (void)removeRowsAtIndexPaths:(NSArray *)indexPaths {
@@ -308,7 +337,9 @@ static NSInteger const kRNTableSectionHeaderIndex = NSNotFound;
   }];
 
   [self removeRowsAtIndexes:rowIndexes];
-  [[self rowSectionData] removeObjectsAtIndexes:rowIndexes];
+
+  NSArray *rowSectionData = [self rowSectionDataForDataSource:[self ig_dataSource]];
+  [self setRowSectionData:rowSectionData];
 }
 
 
@@ -322,11 +353,11 @@ static NSInteger const kRNTableSectionHeaderIndex = NSNotFound;
   objc_setAssociatedObject(self, @selector(ig_dataSource), dataSource, OBJC_ASSOCIATION_ASSIGN);
 }
 
-- (NSMutableArray *)rowSectionData {
+- (NSArray *)rowSectionData {
   return objc_getAssociatedObject(self, @selector(rowSectionData));
 }
 
-- (void)setRowSectionData:(NSMutableArray *)rowSectionData {
+- (void)setRowSectionData:(NSArray *)rowSectionData {
   objc_setAssociatedObject(self, @selector(rowSectionData), rowSectionData, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
