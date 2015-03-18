@@ -113,11 +113,14 @@
 
 @property (nonatomic, weak) id<IGInterfaceTableDataSource> ig_dataSource;
 
-/// Completely reload all row controllers for the table, including rows, headers, footers, and section headers.
+/** 
+ * Reload the table
+ * @discussion Reloads all row controllers for the table, including rows, headers, footers, and section headers.
+ */
 - (void)reloadData;
 
 
-#pragma mark - Convenience
+/** @name Convenience */
 
 /** 
  * Convert an index for a flat array of row controllers to an indexPath.
@@ -138,7 +141,7 @@
 - (NSInteger)sectionFromRowIndex:(NSInteger)rowIndex;
 
 
-#pragma mark - Headers & Footers
+/** @name Headers & Footers */
 
 /**
  * Get the row controller for the table header. If @p-headerIdentifierForTable: is not implemented, this will return 
@@ -155,7 +158,7 @@
 - (NSObject *)footerController;
 
 
-#pragma mark - Scrolling
+/** @name Scrolling */
 
 /**
  * Scroll to the header row of a section.
@@ -172,7 +175,7 @@
 - (void)scrollToRowAtIndexPath:(NSIndexPath *)indexPath;
 
 
-#pragma mark - Editing
+/** @name Editing */
 
 /**
  * Insert new table sections.
