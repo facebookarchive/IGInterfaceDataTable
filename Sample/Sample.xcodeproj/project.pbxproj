@@ -122,6 +122,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		299C0CB11ABA2E68002D7FB7 /* Row Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				294D4F771A9C013A00C842D5 /* RowController.h */,
+				294D4F781A9C013A00C842D5 /* RowController.m */,
+				294D4F791A9C013A00C842D5 /* SectionRowController.h */,
+				294D4F7A1A9C013A00C842D5 /* SectionRowController.m */,
+			);
+			name = "Row Controllers";
+			sourceTree = "<group>";
+		};
 		29BE4F671A9BFFC80025C38E = {
 			isa = PBXGroup;
 			children = (
@@ -190,13 +201,9 @@
 		29BE4F9E1A9BFFD20025C38E /* Sample WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
-				29BE4FA81A9BFFD20025C38E /* Images.xcassets */,
 				29BE4FA21A9BFFD20025C38E /* InterfaceController.h */,
 				29BE4FA31A9BFFD20025C38E /* InterfaceController.m */,
-				294D4F771A9C013A00C842D5 /* RowController.h */,
-				294D4F781A9C013A00C842D5 /* RowController.m */,
-				294D4F791A9C013A00C842D5 /* SectionRowController.h */,
-				294D4F7A1A9C013A00C842D5 /* SectionRowController.m */,
+				299C0CB11ABA2E68002D7FB7 /* Row Controllers */,
 				29BE4F9F1A9BFFD20025C38E /* Supporting Files */,
 			);
 			path = "Sample WatchKit Extension";
@@ -205,6 +212,7 @@
 		29BE4F9F1A9BFFD20025C38E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				29BE4FA81A9BFFD20025C38E /* Images.xcassets */,
 				29BE4FA01A9BFFD20025C38E /* Info.plist */,
 				29BE4FA11A9BFFD20025C38E /* PushNotificationPayload.apns */,
 			);

@@ -37,7 +37,7 @@
       "size" : "44x44",
       "idiom" : "watch",
       "scale" : "2x",
-      "role" : "appLauncher",
+      "role" : "longLook",
       "subtype" : "42mm"
     },
     {
@@ -52,6 +52,14 @@
       "idiom" : "watch",
       "scale" : "2x",
       "role" : "quickLook",
+      "subtype" : "42mm"
+    },
+    {
+      "size" : "44x44",
+      "idiom" : "watch",
+      "scale" : "2x",
+      "unassigned" : true,
+      "role" : "appLauncher",
       "subtype" : "42mm"
     }
   ],

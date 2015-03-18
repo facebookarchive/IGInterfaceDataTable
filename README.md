@@ -9,6 +9,8 @@ IGInterfaceDataTable is an abstraction to make adding data and rows to [WKInterf
 
 Use IGInterfaceDataTable to build beautiful apps with complex data types, just like the [Instagram Apple Watch](http://www.apple.com/watch/app-store-apps/#instagram) app.
 
+<p align="center"><img title="Data to Watch" src="https://raw.github.com/Instagram/IGInterfaceDataTable/master/images/example.png"/></p>
+
 ## Installation
 
 You can quickly install IGInterfaceDataTable using [CocoaPods](http://cocoapods.org). Add the following to your Podfile:

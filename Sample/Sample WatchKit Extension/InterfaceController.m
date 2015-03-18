@@ -27,25 +27,30 @@
 - (void)awakeWithContext:(id)context {
   [super awakeWithContext:context];
 
-  self.data = [self.class generatedData];
+  self.data = [self.class todoList];
 
   self.table.ig_dataSource = self;
   [self.table reloadData];
 }
 
-+ (NSArray *)generatedData {
++ (NSArray *)todoList {
   return @[
            @{
-             @"title": @"Red",
-             @"items": @[@"Mollis", @"Tristique", @"Aenean"]
+             @"title": @"Urgent",
+             @"items": @[@"Take out trash",
+                         @"Clean room",
+                         @"Finish paper"]
              },
            @{
-             @"title": @"Purple",
-             @"items": @[@"Amet Etiam", @"Adipiscing", @"Fusce"]
+             @"title": @"Todo",
+             @"items": @[@"Ship package",
+                         @"Pay bills",
+                         @"Call Mom"]
              },
            @{
-             @"title": @"Teal",
-             @"items": @[@"Sollicitudin", @"Inceptos", @"Dapibus Elit"]
+             @"title": @"Upcoming",
+             @"items": @[@"Napa Weekend",
+                         @"Valentine's Day"]
              }
            ];
 }
