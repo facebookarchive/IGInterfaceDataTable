@@ -5,9 +5,9 @@
 [![License](http://img.shields.io/cocoapods/l/IGInterfaceDataTable.svg)](https://github.com/Instagram/IGInterfaceDataTable/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/Instagram/IGInterfaceDataTable.svg)](https://travis-ci.org/Instagram/IGInterfaceDataTable)
 
-IGInterfaceDataTable is an abstraction to make adding data and rows to [WKInterfaceTable](https://developer.apple.com/library/prerelease/ios/documentation/WatchKit/Reference/WKInterfaceTable_class/index.html) more manageable. Instead of flattening your data structures into a single-dimensional array, configure your watch tables using the data source pattern, similar to `UITableViewDataSource`.
+IGInterfaceDataTable is a category on [WKInterfaceTable](https://developer.apple.com/library/prerelease/ios/documentation/WatchKit/Reference/WKInterfaceTable_class/index.html) that makes configuring tables with multi-dimensional data easier. Instead of flattening your data structures into an array, configure your watch tables using a data source pattern similar to `UITableViewDataSource`.
 
-Use IGInterfaceDataTable to build beautiful apps with complex data types, just like the [Instagram Apple Watch](http://www.apple.com/watch/app-store-apps/#instagram) app.
+Use IGInterfaceDataTable to build beautiful Apple Watch apps with complex data structures, just like in the [Instagram Apple Watch](http://www.apple.com/watch/app-store-apps/#instagram) app.
 
 ![IGInterfaceDataTable](https://github.com/Instagram/IGInterfaceDataTable/blob/master/images/example.jpg)
 
@@ -29,37 +29,48 @@ Import the framework header, or create an [Objective-C bridging header](https://
 
 ## Getting Started
 
-In order to start using IGInterfaceDataTable, you simply need to conform an object to `IGInterfaceTableDataSource` (defined in [WKInterfaceTable+IGInterfaceDataTable.h](https://github.com/Instagram/IGInterfaceDataTable/blob/master/IGInterfaceDataTable/WKInterfaceTable%2BIGInterfaceDataTable.h)) and set it as your table's `ig_dataSource`.
+In order to start using IGInterfaceDataTable, you simply need to conform an object to `IGInterfaceTableDataSource` (defined [here](https://github.com/Instagram/IGInterfaceDataTable/blob/master/IGInterfaceDataTable/WKInterfaceTable%2BIGInterfaceDataTable.h)) and set it as your table's `ig_dataSource`.
 
-There are only two required methods that you need to implement to start displaying data. The first returns the number of rows for a section. If you don't implement `numberOfSectionsInTable:`, the data source defaults to just a single section.
-
-```objective-c
-- (NSInteger)numberOfRowsInTable:(WKInterfaceTable *)table section:(NSInteger)section;
-```
-
-The other required method returns the **identifier** of the row controller configured in your WatchKit storyboard. You must not return `nil`.
+There are only two required methods that you need to implement to start displaying data. The first returns the number of rows for a section.
 
 ```objective-c
-- (NSString *)table:(WKInterfaceTable *)table rowIdentifierAtIndexPath:(NSIndexPath *)indexPath;
+- (NSInteger)numberOfRowsInTable:(WKInterfaceTable *)table section:(NSInteger)section {
+    return self.items.count;
+}
 ```
 
-Beyond the required methods, you can also provide identifiers for the header, footer, and even section headers.
+**Note:** If you don't implement `numberOfSectionsInTable:`, the data source defaults to just a single section.
+
+The other required method returns the **identifier** of a row controller configured in your WatchKit storyboard.
+
+```objective-c
+- (NSString *)table:(WKInterfaceTable *)table rowIdentifierAtIndexPath:(NSIndexPath *)indexPath {
+    return @"RowIdentifier";
+}
+```
+
+Beyond the required methods, you can also provide identifiers for the [header](https://github.com/Instagram/IGInterfaceDataTable/blob/master/IGInterfaceDataTable/WKInterfaceTable%2BIGInterfaceDataTable.h#L51), [footer](https://github.com/Instagram/IGInterfaceDataTable/blob/master/IGInterfaceDataTable/WKInterfaceTable%2BIGInterfaceDataTable.h#L58), and even [section headers](https://github.com/Instagram/IGInterfaceDataTable/blob/master/IGInterfaceDataTable/WKInterfaceTable%2BIGInterfaceDataTable.h#L97). Check out the header documentation to see everything you can do!
 
 ## Customizing Rows
 
 IGInterfaceDataSource provides convenience methods to update your row controllers whenever you reload or add data to your WKInterfaceTable.
 
-The following method will pass the data source a row controller for a row in the table. You are then free to configure the row, such as setting text labels or adding images.
+The following method will pass the data source a row controller for a row in the table. You're then free to configure the row, such as setting text labels or adding images.
 
 ```objective-c
-- (void)table:(WKInterfaceTable *)table configureRowController:(NSObject *)rowController forIndexPath:(NSIndexPath *)indexPath;
+- (void)table:(WKInterfaceTable *)table 
+        configureRowController:(NSObject *)rowController 
+        forIndexPath:(NSIndexPath *)indexPath {
+    MyController *controller = (MyController *)rowController;
+    [controller.textLabel setText:@"Hello!"];
+}
 ```
 
-Check out the project header for other methods that the data source can implemement.
+There are configure methods for headers, footers, and sections as well.
 
 ## Convenience
 
-IGInterfaceDataSource also provides convenience methods to make bridging between `WKInterfaceTable` and your data structures more seemless.
+IGInterfaceDataSource also provides methods to make bridging between `WKInterfaceTable` and your data structures more seemless.
 
 For example, in order to map a row selection back to the index path of your data, you call `-[WKInterfaceTable indexPathFromRowIndex:]`
 
@@ -86,7 +97,7 @@ For now, tests are run manually by executing the **ApplicationTests** WatchKit e
 
 ## Contributing
 
-See the CONTRIBUTING file for how to help out.
+See the [CONTRIBUTING](https://github.com/Instagram/IGInterfaceDataTable/blob/master/CONTRIBUTING.md) file for how to help out.
 
 ## License
 
