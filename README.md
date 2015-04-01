@@ -70,7 +70,7 @@ There are configure methods for headers, footers, and sections as well.
 
 ## Convenience
 
-IGInterfaceDataSource also provides methods to make bridging between `WKInterfaceTable` and your data structures more seemless.
+IGInterfaceDataSource also provides methods to make bridging between `WKInterfaceTable` and your data structures more seamless.
 
 For example, in order to map a row selection back to the index path of your data, you call `-[WKInterfaceTable indexPathFromRowIndex:]`
 
