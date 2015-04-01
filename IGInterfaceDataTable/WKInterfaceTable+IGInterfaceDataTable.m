@@ -86,7 +86,6 @@
     if (hasSectionIdentifiers) {
       NSString *sectionRowIdentifier = [dataSource table:self identifierForSection:section];
       if (sectionRowIdentifier) {
-        //        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:kRNTableSectionHeaderIndex inSection:section];
         IGTableRowData *rowData = [[IGTableRowData alloc] initWithIdentifier:sectionRowIdentifier section:section];
         [rowSectionData addObject:rowData];
       }
@@ -151,7 +150,6 @@
 #pragma mark - Index Conversion
 
 - (NSIndexPath *)_indexPathFromRowIndex:(NSInteger)rowIndex {
-  // remember that this will return index paths with kRNTableSectionHeaderIndex rows for section headers
   IGTableRowData *rowData = [self rowSectionData][rowIndex];
   return [NSIndexPath indexPathForRow:rowData.row inSection:rowData.section];
 }
