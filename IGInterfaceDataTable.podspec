@@ -5,6 +5,7 @@ Pod::Spec.new do |spec|
   spec.authors      = { 'Ryan Nystrom' => 'rnystrom@fb.com' }
   spec.summary      = 'TODO'
   spec.source       = { :git => 'https://github.com/instagram/IGInterfaceDataTable.git', :tag => '0.1.0' }
+  spec.homepage	    = 'https://github.com/Instagram/IGInterfaceDataTable'
 
   spec.public_header_files = [
       'IGInterfaceDataTable/*.h'
