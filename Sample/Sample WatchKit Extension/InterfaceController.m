@@ -29,6 +29,7 @@
 
   self.data = [self.class todoList];
 
+  [self enableTableSelectCallbacks];
   self.table.ig_dataSource = self;
   [self.table reloadData];
 }
@@ -65,15 +66,20 @@
 
 #pragma mark - Row Selection
 
-// this is a WKInterfaceController method
-- (void)table:(WKInterfaceTable *)table didSelectRowAtIndex:(NSInteger)rowIndex {
-  NSIndexPath *indexPath = [table indexPathFromRowIndex:rowIndex];
-  if (indexPath) {
-    NSDictionary *sectionItem = self.data[indexPath.section];
-    NSArray *items = sectionItem[@"items"];
-    NSString *item = items[indexPath.row];
-    NSLog(@"tapped %@ in section %zi row %zi",item,indexPath.section,indexPath.row);
-  }
+- (void)table:(WKInterfaceTable *)table didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  NSLog(@"Tapped row %@",indexPath);
+}
+
+- (void)table:(WKInterfaceTable *)table didSelectSection:(NSInteger)section {
+  NSLog(@"Section %zi tapped",section);
+}
+
+- (void)tableDidSelectHeader:(WKInterfaceTable *)table {
+  NSLog(@"Header tapped");
+}
+
+- (void)tableDidSelectFooter:(WKInterfaceTable *)table {
+  NSLog(@"Footer tapped");
 }
 
 

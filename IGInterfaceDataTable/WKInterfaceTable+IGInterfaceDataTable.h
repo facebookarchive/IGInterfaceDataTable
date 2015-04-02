@@ -134,7 +134,7 @@
 /**
  * Convert an index for a flat array of row controllers to a section.
  * @param rowIndex An index of a row controller in the table.
- * @return An section for a row or NSNotFound.
+ * @return A section for a row or NSNotFound.
  * @discussion This method only returns the section of a row or section header so checking against NSNotFound is
  * recommended.
  */
@@ -207,5 +207,47 @@
  * @discussion This will not remove section headers if a section is empty.
  */
 - (void)removeRowsAtIndexPaths:(NSArray *)indexPaths;
+
+@end
+
+@interface WKInterfaceController (IGInterfaceDataTable)
+
+/**
+ * Enable table tap event callbacks for a WKInterfaceController or subclass.
+ * @discussion This method swizzles the original @p-table:didSelectRowAtIndex: to IGInterfaceDataTable methods that
+ * have more context around whether a row, section, header or footer was tapped. The original implementation is still
+ * called.
+ */
+- (void)enableTableSelectCallbacks;
+
+/**
+ * An event that is called when a row is selected.
+ * @param table The table that was selected.
+ * @param indexPath The index path of the row that was selected.
+ * @discussion This method will be called only when rows are selected.
+ */
+- (void)table:(WKInterfaceTable *)table didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ * An event that is called when a section header is selected.
+ * @param table The table that was selected.
+ * @param section The section of the row that was selected.
+ * @discussion This method will be called only when section headers are selected.
+ */
+- (void)table:(WKInterfaceTable *)table didSelectSection:(NSInteger)section;
+
+/**
+ * An event that is called when the table header is selected.
+ * @param table The table that was selected.
+ * @discussion This method will be called only when the table header is selected.
+ */
+- (void)tableDidSelectHeader:(WKInterfaceTable *)table;
+
+/**
+ * An event that is called when the table footer is selected.
+ * @param table The table that was selected.
+ * @discussion This method will be called only when the table footer is selected.
+ */
+- (void)tableDidSelectFooter:(WKInterfaceTable *)table;
 
 @end

@@ -29,7 +29,21 @@ Import the framework header, or create an [Objective-C bridging header](https://
 
 ## Getting Started
 
-In order to start using IGInterfaceDataTable, you simply need to conform an object to `IGInterfaceTableDataSource` (defined [here](https://github.com/Instagram/IGInterfaceDataTable/blob/master/IGInterfaceDataTable/WKInterfaceTable%2BIGInterfaceDataTable.h)) and set it as your table's `ig_dataSource`.
+In order to start using IGInterfaceDataTable, you simply need to conform an object to `IGInterfaceTableDataSource` and set it as your table's `ig_dataSource`.
+
+The simplest place to setup your table and data source is in `-[WKInterfaceController awakeWithContext:]`:
+
+```objective-c
+- (void)awakeWithContext:(id)context {
+  [super awakeWithContext:context];
+
+  [self enableTableSelectCallbacks];
+  self.table.ig_dataSource = self;
+  [self.table reloadData];
+}
+```
+
+If you want to receive tap callbacks for rows, sections, headers, and footers, make sure you call `enableTableSelectCallbacks` on your controller.
 
 There are only two required methods that you need to implement to start displaying data. The first returns the number of rows for a section.
 
@@ -72,15 +86,11 @@ There are configure methods for headers, footers, and sections as well.
 
 IGInterfaceDataSource also provides methods to make bridging between `WKInterfaceTable` and your data structures more seamless.
 
-For example, in order to map a row selection back to the index path of your data, you call `-[WKInterfaceTable indexPathFromRowIndex:]`
+You can easily map from a table row index to a section or index path. Make sure to check for `NSNotFound` or `nil`!
 
 ```objective-c
-- (void)table:(WKInterfaceTable *)table didSelectRowAtIndex:(NSInteger)rowIndex {
-  NSIndexPath *indexPath = [table indexPathFromRowIndex:rowIndex];
-  if (indexPath) {
-    // do something with the index path or data
-  }
-}
+NSInteger section = [table sectionFromRowIndex:rowIndex];
+NSIndexPath *indexPath = [table indexPathFromRowIndex:rowIndex];
 ```
 
 Or, you can scroll straight to a section without having to lookup the row index of your data:

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="3737"/>
@@ -12,7 +12,7 @@
                     <items>
                         <table alignment="left" id="hnV-JC-d50">
                             <items>
-                                <tableRow identifier="HeaderRow" selectable="NO" id="TyY-lz-Ehs">
+                                <tableRow identifier="HeaderRow" id="TyY-lz-Ehs">
                                     <group key="rootItem" width="1" height="50" alignment="left" spacing="0.0" id="tJZ-AE-MJL">
                                         <items>
                                             <button alignment="center" verticalAlignment="center" id="sOQ-Na-fj8">
@@ -40,7 +40,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </group>
                                 </tableRow>
-                                <tableRow identifier="SectionRow" selectable="NO" id="sIB-Pa-GoT" customClass="SectionRowController">
+                                <tableRow identifier="SectionRow" id="sIB-Pa-GoT" customClass="SectionRowController">
                                     <group key="rootItem" width="1" height="30" alignment="left" spacing="5" id="tjD-qD-tjY">
                                         <items>
                                             <imageView width="15" height="15" alignment="left" verticalAlignment="center" image="upcoming" id="9rE-wO-3gm"/>
@@ -67,7 +67,7 @@
                                         <outlet property="textLabel" destination="9ik-AE-cg7" id="qHf-58-ZRz"/>
                                     </connections>
                                 </tableRow>
-                                <tableRow identifier="Footer" selectable="NO" id="IOS-Eq-Bhd">
+                                <tableRow identifier="Footer" id="IOS-Eq-Bhd">
                                     <group key="rootItem" width="1" alignment="left" id="Sqg-j5-IbL">
                                         <items>
                                             <label alignment="left" verticalAlignment="center" text="12/15 completed" id="5AZ-5k-88s">

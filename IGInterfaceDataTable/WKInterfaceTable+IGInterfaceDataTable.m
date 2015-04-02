@@ -49,6 +49,9 @@
 
 @end
 
+
+#pragma mark - IGInterfaceDataTable
+
 @implementation WKInterfaceTable (IGInterfaceDataTable)
 
 - (void)reloadData {
@@ -357,6 +360,69 @@
 
 - (void)setRowSectionData:(NSArray *)rowSectionData {
   objc_setAssociatedObject(self, @selector(rowSectionData), rowSectionData, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+@end
+
+
+#pragma mark - WKInterfaceController Swizzling
+
+@implementation WKInterfaceController (IGInterfaceDataTable)
+
+- (void)enableTableSelectCallbacks {
+  Class klass = self.class;
+  SEL originalSelector = @selector(table:didSelectRowAtIndex:);
+  SEL swizzledSelector = @selector(ig_table:didSelectRowAtIndex:);
+
+  Method originalMethod = class_getInstanceMethod(klass, originalSelector);
+  Method swizzledMethod = class_getInstanceMethod(klass, swizzledSelector);
+
+  BOOL didAddMethod = class_addMethod(klass,
+                                      originalSelector,
+                                      method_getImplementation(swizzledMethod),
+                                      method_getTypeEncoding(swizzledMethod));
+
+  if (didAddMethod) {
+    class_replaceMethod(klass,
+                        swizzledSelector,
+                        method_getImplementation(originalMethod),
+                        method_getTypeEncoding(originalMethod));
+  } else {
+    method_exchangeImplementations(originalMethod, swizzledMethod);
+  }
+}
+
+- (void)ig_table:(WKInterfaceTable *)table didSelectRowAtIndex:(NSInteger)rowIndex {
+  [self ig_table:table didSelectRowAtIndex:rowIndex];
+
+  NSIndexPath *indexPath = [table indexPathFromRowIndex:rowIndex];
+  NSUInteger section = [table sectionFromRowIndex:rowIndex];
+
+  if (indexPath) {
+    [self table:table didSelectRowAtIndexPath:indexPath];
+  } else if (section != NSNotFound) {
+    [self table:table didSelectSection:section];
+  } else if ([table _hasHeader] && rowIndex == 0) {
+    [self tableDidSelectHeader:table];
+  } else if ([table _hasFooter] && rowIndex == [table numberOfRows]) {
+    [self tableDidSelectFooter:table];
+  }
+}
+
+- (void)table:(WKInterfaceTable *)table didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  // for subclassing
+}
+
+- (void)table:(WKInterfaceTable *)table didSelectSection:(NSInteger)section {
+  // for subclassing
+}
+
+- (void)tableDidSelectHeader:(WKInterfaceTable *)table {
+  // for subclassing
+}
+
+- (void)tableDidSelectFooter:(WKInterfaceTable *)table {
+  // for subclassing
 }
 
 @end
