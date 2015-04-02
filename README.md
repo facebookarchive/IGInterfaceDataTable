@@ -82,6 +82,21 @@ The following method will pass the data source a row controller for a row in the
 
 There are configure methods for headers, footers, and sections as well.
 
+## Handling Selection
+
+On top of making it easier to display your data, IGInterfaceDataTable also makes responding to tap events much simpler so you don't need to map a row index back to a section or piece of data.
+
+You must call `enableTableSelectCallbacks` on your controller subclass, which swizzles the original `table:didSelectRowAtIndex:` method but still calls the original implementation.
+
+There are four methods that you can override to respond to selection events:
+
+```objective-c
+- (void)table:(WKInterfaceTable *)table didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)table:(WKInterfaceTable *)table didSelectSection:(NSInteger)section;
+- (void)tableDidSelectHeader:(WKInterfaceTable *)table;
+- (void)tableDidSelectFooter:(WKInterfaceTable *)table;
+```
+
 ## Convenience
 
 IGInterfaceDataSource also provides methods to make bridging between `WKInterfaceTable` and your data structures more seamless.
