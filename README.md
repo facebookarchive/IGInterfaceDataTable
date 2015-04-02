@@ -3,7 +3,7 @@
 [![Version](http://img.shields.io/cocoapods/v/IGInterfaceDataTable.svg)](http://cocoapods.org/?q=IGInterfaceDataTable)
 [![Platform](http://img.shields.io/cocoapods/p/IGInterfaceDataTable.svg)]()
 [![License](http://img.shields.io/cocoapods/l/IGInterfaceDataTable.svg)](https://github.com/Instagram/IGInterfaceDataTable/blob/master/LICENSE)
-[![Build Status](https://travis-ci.org/Instagram/IGInterfaceDataTable.svg)](https://travis-ci.org/Instagram/IGInterfaceDataTable)
+<!--[![Build Status](https://travis-ci.org/Instagram/IGInterfaceDataTable.svg)](https://travis-ci.org/Instagram/IGInterfaceDataTable)-->
 
 IGInterfaceDataTable is a category on [WKInterfaceTable](https://developer.apple.com/library/prerelease/ios/documentation/WatchKit/Reference/WKInterfaceTable_class/index.html) that makes configuring tables with multi-dimensional data easier. Instead of flattening your data structures into an array, configure your watch tables using a data source pattern similar to `UITableViewDataSource`.
 
