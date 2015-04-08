@@ -37,13 +37,10 @@ The simplest place to setup your table and data source is in `-[WKInterfaceContr
 - (void)awakeWithContext:(id)context {
   [super awakeWithContext:context];
 
-  [self enableTableSelectCallbacks];
   self.table.ig_dataSource = self;
   [self.table reloadData];
 }
 ```
-
-If you want to receive tap callbacks for rows, sections, headers, and footers, make sure you call `enableTableSelectCallbacks` on your controller.
 
 There are only two required methods that you need to implement to start displaying data. The first returns the number of rows for a section.
 

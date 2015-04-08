@@ -369,7 +369,7 @@
 
 @implementation WKInterfaceController (IGInterfaceDataTable)
 
-- (void)enableTableSelectCallbacks {
++ (void)load {
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     Class klass = self.class;
