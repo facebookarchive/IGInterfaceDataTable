@@ -32,7 +32,6 @@
 
   self.data = [self.class todoList];
 
-  [self enableTableSelectCallbacks];
   self.table.ig_dataSource = self;
   [self.table reloadData];
 }

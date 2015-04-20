@@ -213,14 +213,6 @@
 @interface WKInterfaceController (IGInterfaceDataTable)
 
 /**
- * Enable table tap event callbacks for a WKInterfaceController or subclass.
- * @discussion This method swizzles the original @p-table:didSelectRowAtIndex: to IGInterfaceDataTable methods that
- * have more context around whether a row, section, header or footer was tapped. The original implementation is still
- * called.
- */
-- (void)enableTableSelectCallbacks;
-
-/**
  * An event that is called when a row is selected.
  * @param table The table that was selected.
  * @param indexPath The index path of the row that was selected.
