@@ -9,6 +9,10 @@
  */
 
 #import "InterfaceController.h"
+#import "HeaderRowController.h"
+#import "SectionRowController.h"
+#import "RowController.h"
+#import "FooterRowController.h"
 
 #import <IGInterfaceDataTable/IGInterfaceDataTable.h>
 
@@ -38,21 +42,25 @@
   self.showsHeader = YES;
   [self.table reloadData];
   NSAssert([self.table numberOfRows] == 1, @"Table did not display the header");
+  NSAssert([[self.table rowControllerAtIndex:0] isKindOfClass:[HeaderRowController class]], @"Header-only table does not have a HeaderRowController");
 
   // Test table footer
   self.showsFooter = YES;
   [self.table reloadData];
   NSAssert([self.table numberOfRows] == 2, @"Table did not display the footer");
+  NSAssert([[self.table rowControllerAtIndex:1] isKindOfClass:[FooterRowController class]], @"Expected footer row is not a FooterRowController");
 
   // Test table rows
   self.sections = [@[@1] mutableCopy];
   [self.table reloadData];
   NSAssert([self.table numberOfRows] == 3, @"Table did not display a row");
+  NSAssert([[self.table rowControllerAtIndex:1] isKindOfClass:[RowController class]], @"Expected data row is not a RowController");
 
   // Test table section headers
   self.showsSections = YES;
   [self.table reloadData];
   NSAssert([self.table numberOfRows] == 4, @"Table did not display a section header");
+  NSAssert([[self.table rowControllerAtIndex:1] isKindOfClass:[SectionRowController class]], @"Expected section header is not a SectionRowController");
 
   // Test complex table with header, footer, rows, and section headers
   self.sections = [@[@1, @2, @3] mutableCopy];
@@ -66,6 +74,7 @@
   // Test remove sections
   [self.table removeSections:[NSIndexSet indexSetWithIndex:2]];
   NSAssert([self.table numberOfRows] == 6, @"Removing a section did not update the table rows correctly");
+  NSAssert([[self.table rowControllerAtIndex:0] isKindOfClass:[HeaderRowController class]], @"First row is no longer a table header");
 
   // Test inserting a row
   [self.table insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:1]] withRowType:@"Row"];
