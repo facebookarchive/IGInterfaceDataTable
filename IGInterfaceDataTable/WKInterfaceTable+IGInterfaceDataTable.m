@@ -370,29 +370,26 @@
 @implementation WKInterfaceController (IGInterfaceDataTable)
 
 + (void)load {
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    Class klass = self.class;
-    SEL originalSelector = @selector(table:didSelectRowAtIndex:);
-    SEL swizzledSelector = @selector(ig_table:didSelectRowAtIndex:);
+  Class klass = self.class;
+  SEL originalSelector = @selector(table:didSelectRowAtIndex:);
+  SEL swizzledSelector = @selector(ig_table:didSelectRowAtIndex:);
 
-    Method originalMethod = class_getInstanceMethod(klass, originalSelector);
-    Method swizzledMethod = class_getInstanceMethod(klass, swizzledSelector);
+  Method originalMethod = class_getInstanceMethod(klass, originalSelector);
+  Method swizzledMethod = class_getInstanceMethod(klass, swizzledSelector);
 
-    BOOL didAddMethod = class_addMethod(klass,
-                                          originalSelector,
-                                          method_getImplementation(swizzledMethod),
-                                          method_getTypeEncoding(swizzledMethod));
+  BOOL didAddMethod = class_addMethod(klass,
+                                        originalSelector,
+                                        method_getImplementation(swizzledMethod),
+                                        method_getTypeEncoding(swizzledMethod));
 
-    if (didAddMethod) {
-        class_replaceMethod(klass,
-                            swizzledSelector,
-                            method_getImplementation(originalMethod),
-                            method_getTypeEncoding(originalMethod));
-    } else {
-      method_exchangeImplementations(originalMethod, swizzledMethod);
-    }
-  });
+  if (didAddMethod) {
+      class_replaceMethod(klass,
+                          swizzledSelector,
+                          method_getImplementation(originalMethod),
+                          method_getTypeEncoding(originalMethod));
+  } else {
+    method_exchangeImplementations(originalMethod, swizzledMethod);
+  }
 }
 
 - (void)ig_table:(WKInterfaceTable *)table didSelectRowAtIndex:(NSInteger)rowIndex {
