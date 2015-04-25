@@ -19,6 +19,10 @@
 		2997A5281AB0B9CC008CF149 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2997A5271AB0B9CC008CF149 /* Images.xcassets */; };
 		2997A52B1AB0B9CC008CF149 /* ApplicationTests WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2997A50E1AB0B9CC008CF149 /* ApplicationTests WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5A2667A3C5B8110278FA1BA9 /* libPods-ApplicationTests WatchKit Extension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4207B02DE4418FB783566822 /* libPods-ApplicationTests WatchKit Extension.a */; };
+		781F4E2B1AE893D90007E2E3 /* HeaderRowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 781F4E2A1AE893D90007E2E3 /* HeaderRowController.m */; };
+		781F4E2E1AE893FA0007E2E3 /* SectionRowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 781F4E2D1AE893FA0007E2E3 /* SectionRowController.m */; };
+		781F4E321AE8942E0007E2E3 /* RowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 781F4E311AE8942E0007E2E3 /* RowController.m */; };
+		781F4E351AE894390007E2E3 /* FooterRowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 781F4E341AE894390007E2E3 /* FooterRowController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +77,14 @@
 		4207B02DE4418FB783566822 /* libPods-ApplicationTests WatchKit Extension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ApplicationTests WatchKit Extension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		50B7CF739E5E26A5350F913A /* Pods-ApplicationTests WatchKit Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ApplicationTests WatchKit Extension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ApplicationTests WatchKit Extension/Pods-ApplicationTests WatchKit Extension.release.xcconfig"; sourceTree = "<group>"; };
 		6AD0A20C7D2E6B6560BFA6A7 /* Pods-ApplicationTests WatchKit Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ApplicationTests WatchKit Extension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ApplicationTests WatchKit Extension/Pods-ApplicationTests WatchKit Extension.debug.xcconfig"; sourceTree = "<group>"; };
+		781F4E291AE893D90007E2E3 /* HeaderRowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeaderRowController.h; sourceTree = "<group>"; };
+		781F4E2A1AE893D90007E2E3 /* HeaderRowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeaderRowController.m; sourceTree = "<group>"; };
+		781F4E2C1AE893FA0007E2E3 /* SectionRowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionRowController.h; sourceTree = "<group>"; };
+		781F4E2D1AE893FA0007E2E3 /* SectionRowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionRowController.m; sourceTree = "<group>"; };
+		781F4E301AE8942E0007E2E3 /* RowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RowController.h; sourceTree = "<group>"; };
+		781F4E311AE8942E0007E2E3 /* RowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RowController.m; sourceTree = "<group>"; };
+		781F4E331AE894390007E2E3 /* FooterRowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooterRowController.h; sourceTree = "<group>"; };
+		781F4E341AE894390007E2E3 /* FooterRowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooterRowController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +155,7 @@
 			children = (
 				2997A5131AB0B9CC008CF149 /* InterfaceController.h */,
 				2997A5141AB0B9CC008CF149 /* InterfaceController.m */,
+				781F4E2F1AE894080007E2E3 /* Row Controllers */,
 				2997A5191AB0B9CC008CF149 /* Images.xcassets */,
 				2997A5101AB0B9CC008CF149 /* Supporting Files */,
 			);
@@ -182,6 +195,21 @@
 				50B7CF739E5E26A5350F913A /* Pods-ApplicationTests WatchKit Extension.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		781F4E2F1AE894080007E2E3 /* Row Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				781F4E291AE893D90007E2E3 /* HeaderRowController.h */,
+				781F4E2A1AE893D90007E2E3 /* HeaderRowController.m */,
+				781F4E2C1AE893FA0007E2E3 /* SectionRowController.h */,
+				781F4E2D1AE893FA0007E2E3 /* SectionRowController.m */,
+				781F4E301AE8942E0007E2E3 /* RowController.h */,
+				781F4E311AE8942E0007E2E3 /* RowController.m */,
+				781F4E331AE894390007E2E3 /* FooterRowController.h */,
+				781F4E341AE894390007E2E3 /* FooterRowController.m */,
+			);
+			name = "Row Controllers";
 			sourceTree = "<group>";
 		};
 		9733A53465B7C8A1B0AE544A /* Frameworks */ = {
@@ -368,6 +396,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				2997A5151AB0B9CC008CF149 /* InterfaceController.m in Sources */,
+				781F4E2B1AE893D90007E2E3 /* HeaderRowController.m in Sources */,
+				781F4E321AE8942E0007E2E3 /* RowController.m in Sources */,
+				781F4E351AE894390007E2E3 /* FooterRowController.m in Sources */,
+				781F4E2E1AE893FA0007E2E3 /* SectionRowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

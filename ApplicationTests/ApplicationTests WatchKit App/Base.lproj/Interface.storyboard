@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="3737"/>
     </dependencies>
     <scenes>
@@ -12,7 +12,7 @@
                     <items>
                         <table alignment="left" id="hnV-JC-d50">
                             <items>
-                                <tableRow identifier="HeaderRow" id="TyY-lz-Ehs">
+                                <tableRow identifier="HeaderRow" id="TyY-lz-Ehs" customClass="HeaderRowController">
                                     <group key="rootItem" width="1" alignment="left" spacing="0.0" id="tJZ-AE-MJL">
                                         <items>
                                             <label alignment="left" verticalAlignment="center" text="Header" id="anI-MR-FJ7">
@@ -21,7 +21,7 @@
                                         </items>
                                     </group>
                                 </tableRow>
-                                <tableRow identifier="SectionRow" id="sIB-Pa-GoT">
+                                <tableRow identifier="SectionRow" id="sIB-Pa-GoT" customClass="SectionRowController">
                                     <group key="rootItem" width="1" alignment="left" spacing="5" id="tjD-qD-tjY">
                                         <items>
                                             <label alignment="left" verticalAlignment="center" text="Section" id="kL5-ip-FAE">
@@ -29,11 +29,8 @@
                                             </label>
                                         </items>
                                     </group>
-                                    <connections>
-                                        <outlet property="textLabel" destination="kL5-ip-FAE" id="A0D-wh-J2g"/>
-                                    </connections>
                                 </tableRow>
-                                <tableRow identifier="Row" id="6yx-WG-6YO">
+                                <tableRow identifier="Row" id="6yx-WG-6YO" customClass="RowController">
                                     <group key="rootItem" width="1" alignment="left" id="0Uu-zT-7Kz">
                                         <items>
                                             <label alignment="left" verticalAlignment="center" text="Row" id="9ik-AE-cg7">
@@ -41,11 +38,8 @@
                                             </label>
                                         </items>
                                     </group>
-                                    <connections>
-                                        <outlet property="textLabel" destination="9ik-AE-cg7" id="qHf-58-ZRz"/>
-                                    </connections>
                                 </tableRow>
-                                <tableRow identifier="FooterRow" id="IOS-Eq-Bhd">
+                                <tableRow identifier="FooterRow" id="IOS-Eq-Bhd" customClass="FooterRowController">
                                     <group key="rootItem" width="1" alignment="left" id="Sqg-j5-IbL">
                                         <items>
                                             <label alignment="left" verticalAlignment="center" text="Footer" id="5AZ-5k-88s">
