@@ -312,7 +312,7 @@
         NSArray *subRowData = [originalRowSectionData subarrayWithRange:NSMakeRange(subArrayStart, count - subArrayStart)];
         [subRowData enumerateObjectsUsingBlock:^(IGTableRowData *row, NSUInteger idx, BOOL *stop2) {
           if (row.section == section) {
-            [rowIndexes addIndex:idx];
+            [rowIndexes addIndex:subArrayStart + idx];
           } else {
             *stop2 = YES;
           }
