@@ -137,7 +137,7 @@
     if (!indexPath) {
       if (idx == 0 && [dataSource respondsToSelector:@selector(table:configureHeaderController:)]) {
         [dataSource table:self configureHeaderController:controller];
-      } else if ([dataSource respondsToSelector:@selector(table:configureHeaderController:)]) {
+      } else if ([dataSource respondsToSelector:@selector(table:configureFooterController:)]) {
         [dataSource table:self configureFooterController:controller];
       }
     } else if (indexPath.row == NSNotFound
