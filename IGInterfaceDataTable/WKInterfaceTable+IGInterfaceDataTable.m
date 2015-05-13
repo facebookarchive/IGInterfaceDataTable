@@ -15,8 +15,8 @@
 
 @interface IGTableRowData : NSObject
 @property (nonatomic, strong, readonly) NSString *identifier;
-@property (nonatomic, assign) NSUInteger section;
-@property (nonatomic, assign) NSUInteger row;
+@property (nonatomic, assign, readonly) NSUInteger section;
+@property (nonatomic, assign, readonly) NSUInteger row;
 @end
 
 @implementation IGTableRowData
@@ -41,10 +41,20 @@
 - (BOOL)isEqual:(id)object {
   if ([object isKindOfClass:IGTableRowData.class]) {
     IGTableRowData *data = (IGTableRowData *)object;
-    return [self.identifier isEqualToString:data.identifier] && self.section == data.section && self.row == data.row;
+    return ((!self.identifier && !data.identifier) || [self.identifier isEqualToString:data.identifier])
+    && self.section == data.section && self.row == data.row;
   } else {
     return NO;
   }
+}
+
+- (NSUInteger)hash {
+  return [self.identifier hash] ^ self.section ^ self.row;
+}
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%p %@: identifier = %@; section = %zi; row = %zi>",
+          self, NSStringFromClass(self.class), self.identifier, self.section, self.row];
 }
 
 @end
@@ -149,6 +159,46 @@
   }];
 }
 
+- (NSArray *)smoothedRowSectionData:(NSArray *)rowSectionData {
+  NSMutableArray *mRowSectionData = [[NSMutableArray alloc] initWithCapacity:rowSectionData.count];
+  NSUInteger runningSection = 0, previousSection = 0, runningRow = 0, previousRow = 0;
+
+  IGTableRowData *firstRowData = [rowSectionData firstObject];
+  previousSection = firstRowData.section;
+  previousRow = firstRowData.row;
+
+  for (IGTableRowData *rowData in rowSectionData) {
+    NSUInteger section = rowData.section;
+    NSUInteger row = rowData.row;
+
+    // header-header trumps all
+    if (section < NSNotFound) {
+
+      // do not increment if previous was a header-header
+      if (section != previousSection && previousSection != NSNotFound) {
+        // starting a new section
+        runningSection++;
+        runningRow = 0;
+      }
+
+      section = runningSection;
+
+      // section-header trumps row
+      if (row < NSNotFound) {
+        row = runningRow;
+        runningRow++;
+      }
+    }
+
+    previousSection = rowData.section;
+    previousRow = rowData.row;
+
+    IGTableRowData *newRowData = [[IGTableRowData alloc] initWithIdentifier:rowData.identifier section:section row:row];
+    [mRowSectionData addObject:newRowData];
+  }
+  return [mRowSectionData copy];
+}
+
 
 #pragma mark - Index Conversion
 
@@ -243,14 +293,15 @@
 #pragma mark - Editing
 
 - (void)insertSections:(NSIndexSet *)sections withSectionType:(NSString *)sectionType {
+  NSArray *rowSectionData = [self rowSectionDataForDataSource:[self ig_dataSource]];
+  [self setRowSectionData:rowSectionData];
+
   NSMutableIndexSet *rowIndexes = [[NSMutableIndexSet alloc] init];
-  NSMutableArray *insertedSections = [[NSMutableArray alloc] init];
 
   [sections enumerateIndexesUsingBlock:^(NSUInteger section, BOOL *stop) {
     NSInteger rowIndex = [self rowIndexFromSection:section];
     if (rowIndex != NSNotFound) {
       [rowIndexes addIndex:rowIndex];
-      [insertedSections addObject:@(section)];
     }
   }];
 
@@ -259,25 +310,22 @@
   if ([self.ig_dataSource respondsToSelector:@selector(table:configureSectionController:forSection:)]) {
     [rowIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
       NSObject *controller = [self rowControllerAtIndex:idx];
-      NSUInteger section = [insertedSections[idx] integerValue];
-      [self.ig_dataSource table:self configureSectionController:controller forSection:section];
+      IGTableRowData *rowData = rowSectionData[idx];
+      [self.ig_dataSource table:self configureSectionController:controller forSection:rowData.section];
     }];
   }
-
-  NSArray *rowSectionData = [self rowSectionDataForDataSource:[self ig_dataSource]];
-  [self setRowSectionData:rowSectionData];
 }
 
 - (void)insertRowsAtIndexPaths:(NSArray *)indexPaths withRowType:(NSString *)rowType {
+  NSArray *rowSectionData = [self rowSectionDataForDataSource:[self ig_dataSource]];
+  [self setRowSectionData:rowSectionData];
+
   NSMutableIndexSet *rowIndexes = [[NSMutableIndexSet alloc] init];
-  NSMutableArray *insertedRowData = [[NSMutableArray alloc] init];
 
   [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
     NSInteger rowIndex = [self rowIndexFromIndexPath:indexPath];
     if (rowIndex != NSNotFound) {
       [rowIndexes addIndex:rowIndex];
-      IGTableRowData *rowData = [[IGTableRowData alloc] initWithIdentifier:rowType section:indexPath.section row:indexPath.row];
-      [insertedRowData addObject:rowData];
     }
   }];
 
@@ -286,14 +334,11 @@
   if ([self.ig_dataSource respondsToSelector:@selector(table:configureRowController:forIndexPath:)]) {
     [rowIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
       NSObject *controller = [self rowControllerAtIndex:idx];
-      IGTableRowData *rowData = insertedRowData[idx];
+      IGTableRowData *rowData = rowSectionData[idx];
       NSIndexPath *indexPath = [NSIndexPath indexPathForRow:rowData.row inSection:rowData.section];
       [self.ig_dataSource table:self configureRowController:controller forIndexPath:indexPath];
     }];
   }
-
-  NSArray *rowSectionData = [self rowSectionDataForDataSource:[self ig_dataSource]];
-  [self setRowSectionData:rowSectionData];
 }
 
 - (void)removeSections:(NSIndexSet *)sections {
@@ -323,8 +368,10 @@
 
   [self removeRowsAtIndexes:rowIndexes];
 
-  NSArray *updatedSectionData = [self rowSectionDataForDataSource:[self ig_dataSource]];
-  [self setRowSectionData:updatedSectionData];
+  NSMutableArray *mRowSectionData = [[self rowSectionData] mutableCopy];
+  [mRowSectionData removeObjectsAtIndexes:rowIndexes];
+
+  [self setRowSectionData:[self smoothedRowSectionData:mRowSectionData]];
 }
 
 - (void)removeRowsAtIndexPaths:(NSArray *)indexPaths {
@@ -332,15 +379,15 @@
 
   [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
     NSInteger rowIndex = [self rowIndexFromIndexPath:indexPath];
-    if (rowIndex != NSNotFound) {
-      [rowIndexes addIndex:rowIndex];
-    }
+    [rowIndexes addIndex:rowIndex];
   }];
 
   [self removeRowsAtIndexes:rowIndexes];
 
-  NSArray *rowSectionData = [self rowSectionDataForDataSource:[self ig_dataSource]];
-  [self setRowSectionData:rowSectionData];
+  NSMutableArray *mRowSectionData = [[self rowSectionData] mutableCopy];
+  [mRowSectionData removeObjectsAtIndexes:rowIndexes];
+
+  [self setRowSectionData:[self smoothedRowSectionData:mRowSectionData]];
 }
 
 
@@ -378,15 +425,15 @@
   Method swizzledMethod = class_getInstanceMethod(klass, swizzledSelector);
 
   BOOL didAddMethod = class_addMethod(klass,
-                                        originalSelector,
-                                        method_getImplementation(swizzledMethod),
-                                        method_getTypeEncoding(swizzledMethod));
+                                      originalSelector,
+                                      method_getImplementation(swizzledMethod),
+                                      method_getTypeEncoding(swizzledMethod));
 
   if (didAddMethod) {
-      class_replaceMethod(klass,
-                          swizzledSelector,
-                          method_getImplementation(originalMethod),
-                          method_getTypeEncoding(originalMethod));
+    class_replaceMethod(klass,
+                        swizzledSelector,
+                        method_getImplementation(originalMethod),
+                        method_getTypeEncoding(originalMethod));
   } else {
     method_exchangeImplementations(originalMethod, swizzledMethod);
   }
