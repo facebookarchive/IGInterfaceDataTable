@@ -64,6 +64,32 @@
 
 @implementation WKInterfaceTable (IGInterfaceDataTable)
 
+- (BOOL)isUpdating {
+  NSNumber *number = objc_getAssociatedObject(self, @selector(isUpdating));
+  return [number boolValue];
+}
+
+- (void)setIsUpdating:(BOOL)updating {
+  NSNumber *number = [NSNumber numberWithBool:updating];
+  objc_setAssociatedObject(self, @selector(isUpdating), number, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSMutableArray *)rowIndexesToAdd {
+  return objc_getAssociatedObject(self, @selector(rowIndexesToAdd));
+}
+
+- (void)setRowIndexesToAdd:(NSMutableArray *)rowIndexesToAdd {
+  objc_setAssociatedObject(self, @selector(rowIndexesToAdd), rowIndexesToAdd, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSMutableDictionary *)rowTypesToAdd {
+  return objc_getAssociatedObject(self, @selector(rowTypesToAdd));
+}
+
+- (void)setRowTypesToAdd:(NSMutableDictionary *)rowTypesToAdd {
+  objc_setAssociatedObject(self, @selector(rowTypesToAdd), rowTypesToAdd, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 - (void)reloadData {
   NSArray *rowSectionData = [self rowSectionDataForDataSource:[self ig_dataSource]];
   [self syncRowSectionData:rowSectionData];
@@ -292,6 +318,12 @@
 
 #pragma mark - Editing
 
+- (void)updateRowWithIndexPath:(NSIndexPath *)indexPath {
+  NSInteger row = [self rowIndexFromIndexPath:indexPath];
+  NSObject *controller = [self rowControllerAtIndex:row];
+  [self.ig_dataSource table:self configureRowController:controller forIndexPath:indexPath];
+}
+
 - (void)insertSections:(NSIndexSet *)sections withSectionType:(NSString *)sectionType {
   NSArray *rowSectionData = [self rowSectionDataForDataSource:[self ig_dataSource]];
   [self setRowSectionData:rowSectionData];
@@ -317,6 +349,14 @@
 }
 
 - (void)insertRowsAtIndexPaths:(NSArray *)indexPaths withRowType:(NSString *)rowType {
+  if(self.isUpdating) {
+    [self.rowIndexesToAdd addObjectsFromArray:indexPaths];
+    [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
+      [self.rowTypesToAdd setObject:rowType forKey:indexPath];
+    }];
+    return;
+  }
+
   NSArray *rowSectionData = [self rowSectionDataForDataSource:[self ig_dataSource]];
   [self setRowSectionData:rowSectionData];
 
@@ -339,6 +379,41 @@
       [self.ig_dataSource table:self configureRowController:controller forIndexPath:indexPath];
     }];
   }
+}
+
+- (void)beginUpdates {
+  self.isUpdating = true;
+  self.rowIndexesToAdd = [[NSMutableArray alloc] init];
+  self.rowTypesToAdd = [[NSMutableDictionary alloc] init];
+}
+
+- (void)endUpdates {
+  NSAssert(self.isUpdating, @"Calling -endUpdates without first calling -beginUpdates.");
+
+  if(!self.isUpdating) {
+    return;
+  }
+
+  [self.rowIndexesToAdd sortUsingComparator:^NSComparisonResult(NSIndexPath *obj1, NSIndexPath *obj2) {
+    NSInteger r1 = [obj1 row];
+    NSInteger r2 = [obj2 row];
+    if (r1 > r2) {
+      return NSOrderedDescending;
+    }
+    if (r1 < r2) {
+      return NSOrderedAscending;
+    }
+    return NSOrderedSame;
+  }];
+
+  self.isUpdating = false;
+
+  [self.rowIndexesToAdd enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
+    [self insertRowsAtIndexPaths:@[indexPath] withRowType:self.rowTypesToAdd[indexPath]];
+  }];
+
+  self.rowIndexesToAdd = nil;
+  self.rowTypesToAdd = nil;
 }
 
 - (void)removeSections:(NSIndexSet *)sections {
